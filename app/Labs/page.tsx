@@ -2,7 +2,10 @@ import Link from "next/link";
 export default function Labs() {
  return (
    <div id="wd-labs">
-     <h1>Dheepa Maharaji Sankara Subramanian</h1>
+     <h1>Dheepa Maharaji Sankara Subramanian</h1><br/>
+     <h1>https://github.com/DheepaMaharaji/Kambaz-next-js/tree/assg2</h1><br/>
+     <h1>Section 4</h1><br/>
+
      <h3>Labs</h3>
      <ul>
        <li>
