@@ -1,0 +1,148 @@
+
+  .list-group.wd > .list-group-item.active {
+  color: black;
+  background-color: white;
+  border-left: 3px solid black !important;
+}  
+
+
+body   {
+  margin: 0;
+  padding: 0;
+}
+
+body * {
+  font-family: Arial,
+  Helvetica, sans-serif;
+}
+
+@media (min-width: 768px) {
+  #wd-kambaz .wd-main-content-offset {
+    /*padding-left: 140px !important;*/
+    margin-left: 120px !important; 
+   
+  }
+}
+
+/*Course navigation specific styles*/
+.wd-courses-navigation {
+min-width: 200px;
+
+background-color: white;
+}
+
+
+.wd-courses-navigation .wd-inactive-course-link {
+color: #a71d2a !important; 
+font-weight: 500;
+
+}
+
+
+.wd-courses-navigation .wd-active-course-link {
+color: black !important;
+background-color: white ;
+font-weight: 700;
+border-left: 3px solid black !important;
+
+}
+
+
+.wd-courses-navigation .list-group-item {
+padding-top: 10px;
+padding-bottom: 10px;
+padding-left: 13px !important;
+transition: background-color 0.1s ease;
+}
+
+
+
+/*mOdules specific styles*/
+.btn-secondary {
+  --bs-btn-color: #000 !important;
+  --bs-btn-bg: #c7cdd1 !important;
+  --bs-btn-border-color: #c7cdd1 !important;
+  --bs-btn-hover-color: #fff !important;
+}
+.bg-secondary {
+  --bs-secondary-rgb: 199, 205, 209;
+}
+.list-group-item {
+  --bs-list-group-border-color: gray;
+}
+.wd-lesson {
+  border-left: 3px solid green !important;
+}
+/*Assignment specific styles*/
+
+.wd-assignment-list-item {
+  border-left: 5px solid green;
+  padding-top: 1rem;      /* top margin/padding */
+  padding-bottom: 1rem;   /* bottom margin/padding */
+}
+
+.wd-assignment-text {
+  padding-left: 1rem;     /* space from left border */
+}
+
+.wd-assignment-icons > * {
+  margin-left: 0.5rem;    /* spacing between icons */
+  cursor: pointer;
+}
+/* Assignment page specific styles */
+#wd-assignments-editor {
+  margin: 0 auto;         /* Centers the container */
+  width: 90%;             /* Adjusts width based on screen */
+  max-width: 800px;       /* Prevents it from being too wide */
+  text-align: left;
+  padding: 1rem;          /* Adds breathing room */
+}
+
+/* Profile page specific styles */
+/* Profile.css */
+.profile-container {
+  max-width: 350px;
+  margin: 0 auto;
+ 
+}
+
+.profile-title {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+/* SignIn page specific styles */
+.signin-container {
+  max-width: 350px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.signin-title {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.signup-link {
+  display: block;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+/* SignUp page specific styles */
+.signup-container {
+  max-width: 350px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.signup-title {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.signin-link {
+  display: block;
+  text-align: left;
+  font-size: 0.9rem;
+}
