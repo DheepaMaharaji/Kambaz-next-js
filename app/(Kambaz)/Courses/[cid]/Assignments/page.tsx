@@ -33,7 +33,12 @@ export default function Assignments() {
             <SlNote className="me-2 fs-4 text-secondary" />
 
             <div className="wd-assignment-text">
+              <a 
+              href={`./Assignments/123`}
+              className="d-flex align-items-start flex-grow-1 wd-assignment-text text-decoration-none text-dark"
+              >
               <span className="fw-bold"><h5>A1</h5></span>{" "}
+              </a>
               <small>
                 Multiple Modules | <b>Not Available until</b> May 6 at 12:00am | <b>Due</b> May 13 at 11:59pm | 100 pts
               </small>
@@ -53,7 +58,12 @@ export default function Assignments() {
             <SlNote className="me-2 fs-4 text-secondary" />
 
             <div className="wd-assignment-text">
+              <a 
+              href={`./Assignments/123`}
+              className="d-flex align-items-start flex-grow-1 wd-assignment-text text-decoration-none text-dark"
+              >
               <span className="fw-bold"><h5>A1</h5></span>{" "}
+              </a>
               <small>
                 Multiple Modules | <b>Not Available until</b> May 6 at 12:00am | <b>Due</b> May 13 at 11:59pm | 100 pts
               </small>
@@ -73,7 +83,12 @@ export default function Assignments() {
             <SlNote className="me-2 fs-4 text-secondary" />
 
             <div className="wd-assignment-text">
+              <a 
+              href={`./Assignments/123`}
+              className="d-flex align-items-start flex-grow-1 wd-assignment-text text-decoration-none text-dark"
+              >
               <span className="fw-bold"><h5>A1</h5></span>{" "}
+              </a>
               <small>
                 Multiple Modules | <b>Not Available until</b> May 6 at 12:00am | <b>Due</b> May 13 at 11:59pm | 100 pts
               </small>

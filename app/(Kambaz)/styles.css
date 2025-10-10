@@ -101,6 +101,11 @@ transition: background-color 0.1s ease;
 .wd-assignment-text {
   padding-left: 1rem;     /* space from left border */
 }
+.wd-assignment-text:hover {
+  background-color: #f8f9fa; /* light gray instead of white */
+  cursor: pointer;
+      
+}
 
 .wd-assignment-icons > * {
   margin-left: 0.5rem;    /* spacing between icons */
@@ -131,7 +136,7 @@ transition: background-color 0.1s ease;
 /* SignIn page specific styles */
 .signin-container {
   max-width: 350px;
-  margin: 0 auto;
+ margin: 0 auto;
   padding: 20px;
 }
 
