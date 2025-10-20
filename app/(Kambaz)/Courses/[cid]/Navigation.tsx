@@ -4,82 +4,56 @@ import "../../styles.css";
 import { usePathname } from "next/navigation";
 
 export default function CourseNavigation() {
-  const pathname = usePathname();
-
+  
+  const links = ["Home", "Modules", "Piazza", "Zoom", "Assignments", "Quizzes", "Grades", "People"];
   // Helper to check if a link is active
-  const isActive = (path: string) => pathname.startsWith(path);
 
+ const pathname = usePathname();
+
+  // Extract course ID dynamically from pathname (e.g. /Courses/1234/Home)
+  const parts = pathname.split("/");
+  const courseId = parts[2] || "1234";
+  interface LinkItem {
+    name: string;
+  }
+
+  type BuildHref = (name: string) => string;
+
+  const buildHref: BuildHref = (name) => {
+    if (name === "Piazza") return "https://piazza.com/northeastern";
+    if (name === "Zoom") return "https://www.zoom.com/";
+    if (name === "People") return `/Courses/${courseId}/People/Table`;
+    return `/Courses/${courseId}/${name}`;
+  };
+
+  // Helper: check if the link is active
+  interface IsActive {
+    (name: string): boolean;
+  }
+
+  const isActive: IsActive = (name: string): boolean => pathname.includes(name);
   return (
-    <div id="wd-courses-navigation" className="wd list-group fs-5 rounded-0 wd-courses-navigation">
-      <Link
-        href="/Courses/1234/Home"
-        id="wd-course-home-link"
-        className={`list-group-item border-0 ${
-          isActive("/Courses/1234/Home") ? "wd-active-course-link" : "wd-inactive-course-link"
-        }`}
-      >
-        Home
-      </Link>
-
-      <Link
-        href="/Courses/1234/Modules"
-        id="wd-course-modules-link"
-        className={`list-group-item border-0 ${
-          isActive("/Courses/1234/Modules") ? "wd-active-course-link" : "wd-inactive-course-link"
-        }`}
-      >
-        Modules
-      </Link>
-
-      <Link
-        href="https://piazza.com/northeastern"
-        id="wd-course-piazza-link"
-        className={`list-group-item border-0 ${
-          isActive("/Courses/1234/Piazza") ? "wd-active-course-link" : "wd-inactive-course-link"
-        }`}
-      >
-        Piazza
-      </Link>
-
-      <Link
-        href="https://www.zoom.com/"
-        id="wd-course-zoom-link"
-        className={`list-group-item border-0 ${
-          isActive("/Courses/1234/Zoom") ? "wd-active-course-link" : "wd-inactive-course-link"
-        }`}
-      >
-        Zoom
-      </Link>
-
-      <Link
-        href="/Courses/1234/Assignments"
-        id="wd-course-assignments-link"
-        className={`list-group-item border-0 ${
-          isActive("/Courses/1234/Assignments") ? "wd-active-course-link" : "wd-inactive-course-link"
-        }`}
-      >
-        Assignments
-      </Link>
-
-      <Link
-        href="/Courses/1234/Quizzes"
-        id="wd-course-quizzes-link"
-        className={`list-group-item border-0 ${
-          isActive("/Courses/1234/Quizzes") ? "wd-active-course-link" : "wd-inactive-course-link"
-        }`}
-      >
-        Quizzes
-      </Link>
-
-      <Link
-        href="/Courses/1234/People/Table"
-        id="wd-course-people-link"
-        className={`list-group-item border-0 ${
-          isActive("/Courses/1234/People") ? "wd-active-course-link" : "wd-inactive-course-link"
-        }`}
-      >
-        People
-      </Link>
+    <div
+      id="wd-courses-navigation"
+      className="wd list-group fs-5 rounded-0 wd-courses-navigation"
+    >
+      {links.map((name) => {
+        const href = buildHref(name);
+        return (
+          <Link
+            key={name}
+            href={href}
+            id={`wd-course-${name.toLowerCase()}-link`}
+            className={`list-group-item border-0 ${
+              isActive(name)
+                ? "wd-active-course-link"
+                : "wd-inactive-course-link"
+            }`}
+          >
+            {name}
+          </Link>
+        );
+      })}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 
+"use client";
 import ControlButtons from "./ControlButtons";
 import SearchBar from "./SearchBar";
 import { IoMdArrowDropdown } from "react-icons/io";
@@ -9,7 +10,12 @@ import { FaPlusCircle } from "react-icons/fa";
 import { IoEllipsisVertical } from "react-icons/io5";
 import "../../../styles.css";
 import GreenCheckmark from "../Modules/GreenCheckMark";
+import { assignments } from  "../../../Database";
+import { useParams } from "next/navigation";
+
 export default function Assignments() {
+  const {cid} = useParams();
+  const assignmentslist = assignments.filter(a => a.course === cid);
   return (
     <div>
       <SearchBar />
@@ -26,7 +32,10 @@ export default function Assignments() {
 
           </div>
         </ListGroupItem>
-        <ListGroupItem className="d-flex justify-content-between align-items-center wd-assignment-list-item">
+        {assignmentslist.map((assignment) =>  (
+            <ListGroupItem 
+            key = {assignment._id}
+            className="d-flex justify-content-between align-items-center wd-assignment-list-item">
           {/* Text content */}
           <div className="d-flex align-items-start flex-grow-1 wd-assignment-text">
             {/* Icon */}
@@ -34,13 +43,13 @@ export default function Assignments() {
 
             <div className="wd-assignment-text">
               <a 
-              href={`./Assignments/123`}
+              href={`./Assignments/${assignment._id}`}
               className="d-flex align-items-start flex-grow-1 wd-assignment-text text-decoration-none text-dark"
               >
-              <span className="fw-bold"><h5>A1</h5></span>{" "}
+              <span className="fw-bold"><h5>{assignment.title}</h5></span>{" "}
               </a>
               <small>
-                Multiple Modules | <b>Not Available until</b> May 6 at 12:00am | <b>Due</b> May 13 at 11:59pm | 100 pts
+                Multiple Modules | <b>Not Available until</b> {assignment.availableDate} | <b>Due</b> {assignment.dueDate} | {assignment.points} pts
               </small>
             </div>
           </div>
@@ -51,56 +60,9 @@ export default function Assignments() {
               <IoEllipsisVertical className="text-dark fs-4" />
             </div>
         </ListGroupItem>
-        <ListGroupItem className="d-flex justify-content-between align-items-center wd-assignment-list-item">
-          {/* Text content */}
-          <div className="d-flex align-items-start flex-grow-1 wd-assignment-text">
-            {/* Icon */}
-            <SlNote className="me-2 fs-4 text-secondary" />
-
-            <div className="wd-assignment-text">
-              <a 
-              href={`./Assignments/123`}
-              className="d-flex align-items-start flex-grow-1 wd-assignment-text text-decoration-none text-dark"
-              >
-              <span className="fw-bold"><h5>A1</h5></span>{" "}
-              </a>
-              <small>
-                Multiple Modules | <b>Not Available until</b> May 6 at 12:00am | <b>Due</b> May 13 at 11:59pm | 100 pts
-              </small>
-            </div>
-          </div>
-
-          {/* Icons */}
-            <div className="float end justify-content-center d-flex align-items-center gap-3">
-              <GreenCheckmark />
-              <IoEllipsisVertical className="text-dark fs-4" />
-            </div>
-        </ListGroupItem>
-        <ListGroupItem className="d-flex justify-content-between align-items-center wd-assignment-list-item">
-          {/* Text content */}
-          <div className="d-flex align-items-start flex-grow-1 wd-assignment-text">
-            {/* Icon */}
-            <SlNote className="me-2 fs-4 text-secondary" />
-
-            <div className="wd-assignment-text">
-              <a 
-              href={`./Assignments/123`}
-              className="d-flex align-items-start flex-grow-1 wd-assignment-text text-decoration-none text-dark"
-              >
-              <span className="fw-bold"><h5>A1</h5></span>{" "}
-              </a>
-              <small>
-                Multiple Modules | <b>Not Available until</b> May 6 at 12:00am | <b>Due</b> May 13 at 11:59pm | 100 pts
-              </small>
-            </div>
-          </div>
-
-          {/* Icons */}
-            <div className="float end justify-content-center d-flex align-items-center gap-3">
-              <GreenCheckmark />
-              <IoEllipsisVertical className="text-dark fs-4" />
-            </div>
-        </ListGroupItem>
+        ))}
+        
+        
       </ListGroup>
     </div>
   );
