@@ -2,6 +2,7 @@
   {
     "_id": "A101",
     "title": "Propulsion Assignment",
+    "description": "Analyze the fundamentals of rocket propulsion systems and engines.",
     "course": "RS101",
     "availableDate": "2024-05-01",
     "untilDate": "2024-05-20",
@@ -11,6 +12,7 @@
   {
     "_id": "A102",
     "title": "Combustion Analysis",
+    "description": "Investigate combustion processes in rocket engines and their efficiency.",
     "course": "RS101",
     "availableDate": "2024-05-02",
     "untilDate": "2024-05-22",
@@ -20,6 +22,7 @@
   {
     "_id": "A103",
     "title": "Nozzle Design Project",
+    "description": "Design and optimize a rocket nozzle for maximum performance.",
     "course": "RS101",
     "availableDate": "2024-05-05",
     "untilDate": "2024-05-25",
@@ -29,6 +32,7 @@
   {
     "_id": "A201",
     "title": "Aerodynamics Quiz",
+    "description": "Test your knowledge on basic and advanced aerodynamic principles.",
     "course": "RS102",
     "availableDate": "2024-05-03",
     "untilDate": "2024-05-18",
@@ -38,6 +42,7 @@
   {
     "_id": "A202",
     "title": "Flow Analysis",
+    "description": "Analyze subsonic and supersonic flow behaviors in aerodynamics.",
     "course": "RS102",
     "availableDate": "2024-05-04",
     "untilDate": "2024-05-21",
@@ -47,6 +52,7 @@
   {
     "_id": "A203",
     "title": "Heating Analysis",
+    "description": "Study aerodynamic heating effects and thermal protection systems.",
     "course": "RS102",
     "availableDate": "2024-05-06",
     "untilDate": "2024-05-24",
@@ -56,6 +62,7 @@
   {
     "_id": "A301",
     "title": "Structural Design Task",
+    "description": "Design spacecraft structures considering loads and materials.",
     "course": "RS103",
     "availableDate": "2024-05-02",
     "untilDate": "2024-05-23",
@@ -65,6 +72,7 @@
   {
     "_id": "A302",
     "title": "Orbital Calculations",
+    "description": "Perform orbital mechanics calculations for satellite trajectories.",
     "course": "RS103",
     "availableDate": "2024-05-03",
     "untilDate": "2024-05-22",
@@ -74,6 +82,7 @@
   {
     "_id": "A303",
     "title": "Systems Engineering Exam",
+    "description": "Assess understanding of spacecraft systems and subsystems integration.",
     "course": "RS103",
     "availableDate": "2024-05-05",
     "untilDate": "2024-05-26",

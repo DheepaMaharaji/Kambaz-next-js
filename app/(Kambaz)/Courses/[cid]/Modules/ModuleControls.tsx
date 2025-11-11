@@ -3,22 +3,37 @@
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from "react-bootstrap";
 import { FaPlus } from "react-icons/fa6";
 import GreenCheckmark from "./GreenCheckMark";
- 
-export default function ModulesControls() {
+import { FaTrash } from "react-icons/fa";
+
+import ModuleEditor from "./ModuleEditor";
+import { useState } from "react";
+
+export default function ModulesControls({ moduleName, setModuleName, addModule}:
+{ moduleName: string; setModuleName: (title: string) => void; addModule: () => void; }) {
+ const [show, setShow] = useState(false);
+ const handleClose = () => setShow(false);
+ const handleShow = () => setShow(true);
   return (
     <div id="wd-modules-controls" className="text-nowrap">
       {/* Add Module button */}
+      <ModuleEditor show={show} handleClose={handleClose} dialogTitle="Add Module"
+       moduleName={moduleName} setModuleName={setModuleName} addModule={addModule} />
+       
+        
+      
       <Button
         variant="danger"
         size="lg"
         className="me-1 float-end"
         id="wd-add-module-btn"
         aria-label="Add module"
+         onClick={handleShow} 
       >
         <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
         Module
       </Button>
- 
+
+      
       <Button
         variant="secondary"
         size="lg"
