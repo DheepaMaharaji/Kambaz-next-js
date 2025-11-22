@@ -6,11 +6,12 @@ import ModuleControlButtons from "./ModuleControlButtons";
 import LessonControlButtons from "./LessonControlButton";
 import { useParams } from "next/navigation";
 import {modules as initialModules} from "../../../Database";
-import { useState } from "react";
-import { addModule, editModule, updateModule, deleteModule }
+import { useEffect, useState } from "react";
+import { setModules,addModule, editModule, updateModule, deleteModule }
   from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../store";
+import * as client from "../../client";
 
 type Lesson = {
   _id: string;
@@ -34,76 +35,88 @@ const courseId = cid as string;
   const [moduleName, setModuleName] = useState("");
   const { modules } = useSelector((state: RootState) => state.modulesReducer);
   const dispatch = useDispatch();
-  // const addModule = () => {
-  //   if (!moduleName.trim()) return;
+  
+  const onCreateModuleForCourse = async () => {
+    if (!cid) return;
+    const newModule = { name: moduleName, course: cid as string };
+    const modulecreated = await client.createModuleForCourse(cid as string, newModule);
+    dispatch(setModules([...modules, modulecreated]));
+  };
 
-  //   const newModule: Module = {
-  //     _id: Date.now().toString(),
-  //     name: moduleName,
-  //     description: "",
-  //     course: cid as string,
-  //     lessons: [],
-  //     editing: false,
-  //   };
+  const fetchModules = async () => {
+      const modules = await client.findModulesForCourse(cid as string);
+      dispatch(setModules(modules));
+    };
+    useEffect(() => {
+      fetchModules();
+    }, []);
 
-  //   setModules([...dbmodules, newModule]); 
-  //   setModuleName("");
-  // };
+  const onRemoveModule = async (moduleId: string) => {
+    await client.deleteModule(moduleId);
+    dispatch(setModules(modules.filter((m: Module) => m._id !== moduleId)));
+  };
 
-  // const deleteModule = (moduleId: string) => {
-  //   setModules(dbmodules.filter((m) => m._id !== moduleId));
-  // };
+  const onUpdateModule = async (module: Module) => {
+    await client.updateModule(module);
+    const newModules = modules.map((m: Module) => m._id === module._id ? module : m );
+    dispatch(setModules(newModules));
+  };
+  
+  const { currentUser } = useSelector((state: RootState) => state.accountReducer);
+  const isFaculty = currentUser?.role?.toLowerCase() === "faculty";
 
-  // const editModule = (moduleId: string) => {
-  //   setModules(dbmodules.map((m) => (m._id === moduleId ? { ...m, editing: true } : m)));
-  // };
-  // const updateModule = (module: Module) => {
-  //   setModules(dbmodules.map((m) => (m._id === module._id ? module : m)));
-  // };
-
+  
+ 
 
   return (
     <div>
-      <ModulesControls
-        moduleName={moduleName} setModuleName={setModuleName}
-        addModule={() => {
-          dispatch(addModule({ name: moduleName, course: courseId , description: ""}));
-          setModuleName("");
-        }}  />
-
+      
+      {isFaculty && (
+        <div >
+        <ModulesControls 
+          moduleName={moduleName}
+          setModuleName={setModuleName}
+          addModule={onCreateModuleForCourse}
+        />
+      </div>
+      )}
+      
       <br /><br /><br /><br />
       
       
       <ListGroup id="wd-modules" className="rounded-0">
         {modules
-          .filter((module: Module) => module.course === cid)
           .map((module: Module) => (
             <ListGroupItem
               key={module._id}
               className="wd-module p-0 mb-4 fs-5 border-gray"
             >
               <div className="wd-title p-3 ps-2 bg-light d-flex justify-content-between align-items-center">
-                <div>
-                  <BsGripVertical className="me-2 fs-3" />
+                <div className="d-flex align-items-center flex-grow-1">
+                  <BsGripVertical className="me-4 fs-3" />
                   {!module.editing && module.name}
                   { module.editing && (
-                    <FormControl className="w-100 d-inline-block"
+                    <FormControl className="d-inline-block"
                           onChange={(e) => dispatch(updateModule({ ...module, name: e.target.value }))}
                           onKeyDown={(e) => {
                             if (e.key === "Enter") {
-                              dispatch(updateModule({ ...module, editing: false }));
+                               onUpdateModule({ ...module, editing: false });
                             }
                           }}
                           defaultValue={module.name}/>
                   )}
-                </div>
-                <ModuleControlButtons
-                  moduleId={module._id}
-                  deleteModule= {(moduleId) => {dispatch(deleteModule(moduleId));}}
-                  editModule={(moduleId) => dispatch(editModule(moduleId))}
-                />
+                  </div>
+               {isFaculty && (
+              
+                  <ModuleControlButtons
+                    moduleId={module._id}
+                    deleteModule={(moduleId) => onRemoveModule(moduleId)}
+                    editModule={(moduleId) => dispatch(editModule(moduleId))}
+                  />
+                  
+                )}
+               
               </div>
-
               {module.lessons && (
                 <ListGroup className="wd-lessons rounded-0">
                   {module.lessons.map((lesson: Lesson) => (

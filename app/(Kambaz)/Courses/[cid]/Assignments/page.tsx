@@ -13,9 +13,10 @@ import GreenCheckmark from "../Modules/GreenCheckMark";
 import { useParams,useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store";
-import { useState } from "react";
-import { deleteAssignment } from "./reducer";
+import { useEffect, useState } from "react";
+import { Assignment, deleteAssignment ,setAssignments} from "./reducer";
 import Link from "next/link";
+import * as client from "../../client";
 
 export default function Assignments() {
   const {cid} = useParams();
@@ -29,14 +30,42 @@ export default function Assignments() {
   const { currentUser } = useSelector((state: RootState) => state.accountReducer);
   const isFaculty = currentUser?.role?.toLowerCase() === "faculty";
 
+
+  useEffect(() => {
+    const fetchAssignments = async () => {
+      if (!cid) return;
+
+      try {
+        // Fetch the latest assignment list from the server
+        const data: Assignment[] = await client.fetchAllAssignments(cid);
+        
+        // Update the Redux state with the latest list
+        dispatch(setAssignments(data));
+      } catch (err) {
+        console.error("Failed to fetch assignments on load:", err);
+      }
+    };
+
+    fetchAssignments();
+    // Dependencies: courseId ensures fresh data if navigating between courses.
+  }, [cid, dispatch]);
+
   const handleDeleteClick = (id: string) => {
     setAssignmentToDelete(id);
     setShowModal(true);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async() => {
     if (assignmentToDelete) {
-      dispatch(deleteAssignment(assignmentToDelete));
+      try {
+        
+        await client.deleteAssignmentFromCourse(assignmentToDelete);
+        
+        // 2. DISPATCH: Update Redux store ONLY after successful backend deletion
+        dispatch(deleteAssignment(assignmentToDelete));
+      } catch (error) {
+        console.error("Failed to delete assignment from backend:", error);
+      }
     }
     setShowModal(false);
     setAssignmentToDelete(null);
@@ -78,7 +107,7 @@ export default function Assignments() {
             <SlNote className="me-2 fs-4 text-secondary" />
 
             <div className="wd-assignment-text">
-              {
+              {/* {
                  <Link
                       href={`./Assignments/${assignment._id}`}
                       className="d-flex align-items-start flex-grow-1 wd-assignment-text text-decoration-none text-dark"
@@ -86,7 +115,20 @@ export default function Assignments() {
                     <span className="fw-bold"><h5>{assignment.title}</h5></span>
                       
                   </Link>
-              }
+              } */}
+              {isFaculty ? (
+            <Link
+              href={`./Assignments/${assignment._id}`}
+              className="d-flex align-items-start flex-grow-1 wd-assignment-text text-decoration-none text-dark"
+            >
+              <span className="fw-bold"><h5>{assignment.title}</h5></span>
+            </Link>
+          ) : (
+            // If NOT faculty, render the title without a Link
+            <div className="d-flex align-items-start flex-grow-1 wd-assignment-text text-dark">
+              <span className="fw-bold"><h5>{assignment.title}</h5></span>
+            </div>
+          )}
               
               <small>
                 Multiple Modules | <b>Not Available until</b> {assignment.availableDate} | <b>Due</b> {assignment.dueDate} | {assignment.points} pts

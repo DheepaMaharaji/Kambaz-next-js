@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
-import { assignments as initialAssignments } from "../../../Database";
+import { assignments as assignments } from "../../../Database";
 
 
 export type Assignment = {
@@ -21,16 +21,7 @@ interface AssignmentsState {
 
 
 const initialState: AssignmentsState = {
-  assignments: initialAssignments.map((a) => ({
-    _id: a._id ?? uuidv4(),
-    title: a.title ?? "",
-    description: a.description ?? "",
-    points: a.points ?? 100,
-    dueDate: a.dueDate ?? "",
-    availableDate: a.availableDate ?? "",
-    untilDate: a.untilDate ?? "",
-    course: a.course ?? "",
-  })),
+  assignments: assignments,
 };
 
 
@@ -60,9 +51,13 @@ const assignmentsSlice = createSlice({
         (a) => a._id !== action.payload
       );
     },
+
+    setAssignments: (state, {payload:assignments}) => {
+      state.assignments = assignments;
+    }
   },
 });
 
-export const { addAssignment, updateAssignment, deleteAssignment } =
+export const { addAssignment, updateAssignment, deleteAssignment ,setAssignments} =
   assignmentsSlice.actions;
 export default assignmentsSlice.reducer;
