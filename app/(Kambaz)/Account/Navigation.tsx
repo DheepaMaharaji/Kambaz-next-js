@@ -8,13 +8,23 @@ export default function AccountNavigation() {
   const { currentUser } = useSelector((state: RootState) => state.accountReducer);
   const pathname = usePathname();
  
-  const links = currentUser
-    ? [{ href: "Profile", label: "Profile" }]
-    : [
-        { href: "Signin", label: "Signin" },
-        { href: "Signup", label: "Signup" },
-      ];
+  let links = [];
  
+  if (currentUser) {
+    // User is logged in
+    links.push({ href: "Profile", label: "Profile" });
+
+    // 🔑 2. CONDITIONALLY ADD "Users" LINK
+    if (currentUser.role === "ADMIN") {
+      links.push({ href: "Users", label: "Users" });
+    }
+  }else{
+    // User is not logged in
+    links = [
+      { href: "Signin", label: "Signin" },
+      { href: "Signup", label: "Signup" },
+    ];
+  }
   return (
     <div id="wd-account-navigation" className="wd list-group fs-5 rounded-0">
       {links.map((link) => {

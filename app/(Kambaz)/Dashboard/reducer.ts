@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { enrollments as initialEnrollments } from "../Database";
 interface Enrollment {
+
   user: string;
   course: string;
 }
@@ -38,9 +39,24 @@ const enrollmentSlice = createSlice({
     },
     setEnrollments: (state, {payload:enrollments}) => {
       state.enrollments = enrollments;
-    }
+    },
+    addEnrollment(state, action: PayloadAction<Enrollment>) {
+      // Only add if not already enrolled
+      const exists = state.enrollments.some(
+        (e) =>
+          e.user === action.payload.user && e.course === action.payload.course
+      );
+      if (!exists) {
+        state.enrollments.push(action.payload);
+      }
+    },
+    removeEnrollment(state, action: PayloadAction<{ user: string; course: string }>) {
+      state.enrollments = state.enrollments.filter(
+        (e) => !(e.user === action.payload.user && e.course=== action.payload.course)
+      );
+    },
   },
 });
 
-export const { toggleEnrollment ,setEnrollments} = enrollmentSlice.actions;
+export const { toggleEnrollment ,setEnrollments,addEnrollment,removeEnrollment} = enrollmentSlice.actions;
 export default enrollmentSlice.reducer;

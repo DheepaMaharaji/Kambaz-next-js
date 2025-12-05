@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 export default function CourseNavigation() {
   
-  const links = ["Home", "Modules", "Piazza", "Zoom", "Assignments", "Quizzes", "Grades", "People"];
+  const links = ["Home", "Modules", "Pazza", "Zoom", "Assignments", "Quizzes", "Grades", "People"];
   // Helper to check if a link is active
 
  const pathname = usePathname();
@@ -20,9 +20,9 @@ export default function CourseNavigation() {
   type BuildHref = (name: string) => string;
 
   const buildHref: BuildHref = (name) => {
-    if (name === "Piazza") return "https://piazza.com/northeastern";
+   
     if (name === "Zoom") return "https://www.zoom.com/";
-    if (name === "People") return `/Courses/${courseId}/People/Table`;
+    if (name === "People") return `/Courses/${courseId}/People`;
     return `/Courses/${courseId}/${name}`;
   };
 

@@ -17,13 +17,20 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type User = {
+  TotalActivity?: string;
+  lastActivity?: string;
+  section?: string;
   _id: string;
   username: string;
   password: string;
   firstName?: string;
   lastName?: string;
   role?: string;
+  loginId?: string;
+  email?: string;
+  dob?: string;
 };
+
 
 interface AccountState {
   currentUser: User | null;

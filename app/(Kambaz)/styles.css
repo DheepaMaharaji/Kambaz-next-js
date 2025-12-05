@@ -168,3 +168,59 @@ transition: background-color 0.1s ease;
   text-align: left;
   font-size: 0.9rem;
 }
+/*pazza css fix*/
+.wd-sidebar-header-container {
+  position: sticky; /* This takes the element out of the normal flow and fixes it relative to the viewport. */
+  top: 0px;        /* Anchors it to the very top edge. */
+  left: 0px;       /* Anchors it to the very left edge. */
+  width: 100%;   /* Ensures it spans the full width of the screen. */
+  z-index: 1000; /* Ensures it sits above all other content on the page. */
+  display: flex;
+  align-items: center; 
+  background-color: rgb(50, 136, 192); /* Blue background */
+  padding: 10px 20px;
+}
+
+/* Style for the Logo (for spacing only, size is handled in the component) */
+.wd-sidebar-logo {
+  margin-right: 30px; /* Space between logo and navigation links */
+  /* If you were using a standard <img> tag, you would set size here: */
+  /* width: 100px; */
+  /* height: 40px; */
+}
+.wd-courses-pazza-nav {
+  /* Correct class name used in the component's <nav> element */
+  min-width: 200px;
+  background-color: rgb(50, 136, 192); /* Set the blue background */
+  padding: 10px; /* Added padding for better visual spacing */
+  display: flex; /* Makes the links display nicely, adjust if needed */
+  flex-direction: row; /* Stacks links horizontally */
+}
+
+.wd-course-pazza-link {
+  /* Correct class name used in the component's <Link> elements */
+  color: white !important; /* Set the default text color to white */
+  font-weight: 500;
+  padding: 10px 15px; /* Added internal padding */
+  text-decoration: none; /* Remove underline from links */
+  transition: background-color 0.1s ease;
+}
+
+/* Style for the active link */
+.wd-course-pazza-link.active {
+ color: white !important; 
+  
+  border-bottom: none !important; /* Remove the thick border */
+  border-left: none !important; 
+  text-decoration: underline; /* Add the standard text underline */
+}
+
+.wd-course-header-wrapper {
+  /* Using the same styles as .wd-sidebar-header-container if you kept the wrapper */
+}
+
+/* Assume the sidebar height is 60px based on previous calculations (40px logo + 20px padding) */
+.wd-course-main-content {
+  /* Push the main content down by the height of the sticky header */
+  margin-top: 60px; 
+}

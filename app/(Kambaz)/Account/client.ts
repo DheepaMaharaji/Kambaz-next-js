@@ -9,9 +9,14 @@ interface SigninCredentials {
 }
 
 interface User {
-  _id: string;
+  _id?: string;
   username: string;
   password: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  section?: string;
+  role?: string; 
   // Add other fields as needed, e.g. email?: string;
 }
 
@@ -38,3 +43,42 @@ export const signout = async () => {
   const response = await axiosWithCredentials.post(`${USERS_API}/signout`);
   return response.data;
 };
+
+export const findAllUsers = async () => {
+  const response = await axiosWithCredentials.get(USERS_API);
+  return response.data;
+};
+
+export const findUsersByRole = async (role: string) => {
+  const response = await
+    axios.get(`${USERS_API}?role=${role}`);
+  return response.data;
+};
+
+
+export const findUsersByPartialName = async (name: string) => {
+  const response = await axios.get(`${USERS_API}?name=${name}`);
+  return response.data;
+};
+
+export const findUserById = async (id: string) => {
+  const response = await axios.get(`${USERS_API}/${id}`);
+  return response.data;
+};
+
+export const deleteUser = async (userId: string) => {
+  const response = await axios.delete( `${USERS_API}/${userId}` );
+  return response.data;
+};
+
+export const createUser = async (user: User) => {
+  const response = await axios.post(`${USERS_API}`, user);
+  return response.data;
+};
+
+
+
+
+
+
+
