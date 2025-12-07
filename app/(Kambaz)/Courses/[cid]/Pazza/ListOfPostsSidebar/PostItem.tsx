@@ -6,17 +6,23 @@
 //   createdAt: Date;
 //   type: "note" | "question";
 // }
-interface Post {
+export type Post = {
   id: string;
   title: string;
   author: string;
-  authorRole?: 'student' | 'instructor';
+  authorRole: string;
   content: string;
   createdAt: Date;
-  type: 'note' | 'question';
-  views?: number;
-  folder?: string;
-}
+  type: 'note' | 'question' | 'poll';
+  views: number;
+  folder?: string[];
+  users?: string[];
+  to?: 'Entire Class' | 'Individual Students/Instructors';
+  studentAnswers: string[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  instructorAnswers: string[];
+  readByUserIds: string[];
+};
 interface PostItemProps {
   post: Post;
   onClick: () => void;

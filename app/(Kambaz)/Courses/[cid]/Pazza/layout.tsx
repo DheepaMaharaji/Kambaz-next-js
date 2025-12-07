@@ -20,9 +20,7 @@ export default function CourseLayout({
     <div>
       {/* 1. The sticky navigation bar is rendered here. 
           Because it is outside the 'children' prop, it persists. */}
-      <header className="wd-course-header-wrapper">
-        <Sidebar />
-      </header>
+     
       
       {/* 2. The main content of the page is rendered here. 
           This is the part that changes when you navigate. */}

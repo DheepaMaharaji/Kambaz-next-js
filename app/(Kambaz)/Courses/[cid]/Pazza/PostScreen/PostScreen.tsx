@@ -5,18 +5,9 @@ import { BsFileText, BsQuestionCircle } from "react-icons/bs";
 import { FiEdit } from "react-icons/fi";
 import ActionDropdown from "./ActionDropdown";
 import Editor from "./editor";
+import { Post } from "../ListOfPostsSidebar/PostItem";
 
-export interface Post {
-  id: string;
-  title: string;
-  author: string;
-  authorRole: 'student' | 'instructor';
-  content: string;
-  createdAt: Date;
-  type: 'note' | 'question';
-  views: number;
-  folder?: string;
-}
+
 
 interface PostScreenProps {
   post: Post | null;

@@ -1,7 +1,7 @@
 import React from "react";
 import { FiChevronRight, FiChevronDown } from "react-icons/fi";
-import PostItem from "./PostItem";
-import { Post } from "../PostScreen/PostScreen";
+import PostItem, { Post } from "./PostItem";
+
 
 
 

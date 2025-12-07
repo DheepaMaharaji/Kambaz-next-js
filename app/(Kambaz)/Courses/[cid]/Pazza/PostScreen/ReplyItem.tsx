@@ -2,12 +2,12 @@ import { FiMessageSquare } from "react-icons/fi";
 import ActionDropdown from "./ActionDropdown";
 
 export interface Reply {
-   id: string; 
-   author: string; 
-   authorRole: 'student' | 'instructor'; 
-   content: string; 
-   createdAt: Date; 
-  }
+  id: string; 
+  author: string; 
+  authorRole: 'student' | 'instructor'; 
+  content: string; 
+  createdAt: Date; 
+}
 
 export default function ReplyItem({
   reply,
@@ -28,20 +28,18 @@ export default function ReplyItem({
     reply.author === currentUserName || currentUserRole === 'instructor';
 
   return (
-    <div className="ml-8 border-l-2 border-gray-200 pl-4 py-3">
-      <div className="flex justify-between items-start mb-2">
-        <div className="flex items-center gap-2">
-          <span className="font-semibold text-sm">{reply.author}</span>
+    <div className="ms-4 border-start ps-3 py-3">
+      <div className="d-flex justify-content-between align-items-start mb-2">
+        <div className="d-flex align-items-center gap-2">
+          <span className="fw-semibold small">{reply.author}</span>
           {reply.authorRole === 'instructor' && (
-            <span className="text-xs bg-orange-100 text-orange-700 px-2 py-1 rounded">
+            <span className="badge bg-warning text-dark small">
               Instructor
             </span>
           )}
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-500">
-            {reply.createdAt.toLocaleString()}
-          </span>
+        <div className="d-flex align-items-center gap-2">
+          <span className="text-muted small">{reply.createdAt.toLocaleString()}</span>
           <ActionDropdown
             onEdit={onEdit}
             onDelete={onDelete}
@@ -49,12 +47,12 @@ export default function ReplyItem({
           />
         </div>
       </div>
-      <div className="text-sm text-gray-700 mb-2">{reply.content}</div>
+      <div className="small mb-2">{reply.content}</div>
       <button
         onClick={onReply}
-        className="text-xs text-blue-600 hover:underline flex items-center gap-1"
+        className="btn btn-link btn-sm p-0 text-primary d-flex align-items-center gap-1"
       >
-        <FiMessageSquare className="w-3 h-3" />
+        <FiMessageSquare size={14} />
         Reply
       </button>
     </div>
