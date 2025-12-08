@@ -583,3 +583,28 @@ export const updateReply = async (
 export const deleteReply = async (replyId: string): Promise<void> => {
   await axiosWithCredentials.delete(`${HTTP_SERVER}/api/replies/${replyId}`);
 };
+
+export const findPostsByFolderName = async (
+  courseId: string,
+  folderName: string,
+  userId: string,
+  userRole: string
+) => {
+  const { data } = await axiosWithCredentials.get(
+    `${COURSES_API}/${courseId}/posts/by-folder`,  
+    { 
+      params: { 
+        folderName, 
+        userId, 
+        userRole 
+      } 
+    }
+  );
+  return data;
+};
+export const findUsersForCourse = async (courseId: string): Promise<User[]> => {
+  const { data } = await axiosWithCredentials.get(
+    `${COURSES_API}/${courseId}/users`
+  );
+  return data;
+};

@@ -1,3 +1,4 @@
+
 'use client';
  
 import React, { useState, useEffect } from 'react';
@@ -15,18 +16,21 @@ import {
   FaLink,
   FaQuoteRight,
   FaHeading,
-  FaChevronLeft
+  FaChevronLeft,
+  FaCog
 } from 'react-icons/fa';
 import { Post } from '../ListOfPostsSidebar/PostItem';
-
-
- 
+import { User } from '@/app/(Kambaz)/Account/reducer';
+import { useParams } from 'next/navigation';
+import * as client from "../../../client"
+import { useSelector } from 'react-redux';
+ import { RootState } from "../../../../store";
 // --- Types ---
-
- 
 interface NewPostFormProps {
   onCancel?: () => void;
   onPostCreated?: (post: Post) => void;
+  onManageFolders?: () => void;
+  folders?: string[];
 }
  
 const FormRow = ({ label, children, required = false, alignTop = false }: { label: string, children: React.ReactNode, required?: boolean, alignTop?: boolean }) => (
@@ -39,20 +43,56 @@ const FormRow = ({ label, children, required = false, alignTop = false }: { labe
   </div>
 );
  
-export default function NewPostForm({ onCancel, onPostCreated }: NewPostFormProps) {
+export default function NewPostForm({ 
+  onCancel, 
+  onPostCreated, 
+  onManageFolders,
+  folders = []
+}: NewPostFormProps) {
+  const {cid} = useParams()
+  const courseId = cid as string
   const [postType, setPostType] = useState<Post['type']>('question');
   const [postTo, setPostTo] = useState<Post['to']>('Entire Class');
   const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
+  const { currentUser } = useSelector((state: RootState) => state.accountReducer);
+  const isFaculty = currentUser?.role?.toLowerCase() === 'faculty';
+  // Use folders from props, filter out "All"
+  const allFolders = folders.filter(f => f !== 'All');
   
-  const allFolders = ['hw1', 'hw2', 'project', 'logistics', 'exam_prep', 'other'];
-  const [selectedFolders, setSelectedFolders] = useState<string[]>([allFolders[0]]);
+  // Initialize with first folder if available
+  const [selectedFolders, setSelectedFolders] = useState<string[]>(
+    allFolders.length > 0 ? [allFolders[0]] : []
+  );
   
   const [summary, setSummary] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [details, setDetails] = useState('');
+  const [enrolledUsers, setEnrolledUsers] = useState<User[]>([]);  
+  const [loadingUsers, setLoadingUsers] = useState(true);
  
-  const users = ['Instructors', 'Alice Student', 'Bob Student', 'Charlie TA'];
- 
+  useEffect(() => {
+    const fetchEnrolledUsers = async () => {
+      try {
+        setLoadingUsers(true);
+        const enrollments = await client.findUsersForCourse(courseId);
+        // Filter out any invalid users (null, undefined, or missing _id)
+        const validUsers = Array.isArray(enrollments) 
+          ? enrollments.filter(user => user && user._id) 
+          : [];
+        setEnrolledUsers(validUsers);
+      } catch (error) {
+        console.error('Error fetching enrolled users:', error);
+        setEnrolledUsers([]);
+      } finally {
+        setLoadingUsers(false);
+      }
+    };
+    
+    if (courseId) {
+      fetchEnrolledUsers();
+    }
+  }, [courseId]);
+  
   const editor = useEditor({
     extensions: [StarterKit, Underline, Link],
     content: details,
@@ -111,12 +151,13 @@ export default function NewPostForm({ onCancel, onPostCreated }: NewPostFormProp
       to: postTo,
       studentAnswers: [],
       instructorAnswers: [],
-      readByUserIds: []
+      readByUserIds: [],
+      isSelected: false
     };
     
     setSummary('');
     setDetails('');
-    setSelectedFolders([allFolders[0]]);
+    setSelectedFolders(allFolders.length > 0 ? [allFolders[0]] : []);
     setSelectedUsers([]);
     setErrors({});
     editor?.commands.clearContent();
@@ -134,6 +175,14 @@ export default function NewPostForm({ onCancel, onPostCreated }: NewPostFormProp
         onCancel();
     } else {
         console.log("Back button clicked - pass an onCancel prop to handle routing");
+    }
+  }
+  
+  const handleManageFolders = () => {
+    if (onManageFolders) {
+      onManageFolders();
+    } else {
+      console.log("Manage folders clicked - pass an onManageFolders prop to handle routing");
     }
   }
  
@@ -154,7 +203,7 @@ export default function NewPostForm({ onCancel, onPostCreated }: NewPostFormProp
         <h2 className="m-0 text-dark" style={{ fontSize: 24 }}>New Post</h2>
       </div>
  
-      <div /*className="bg-white"*/>
+      <div>
         
         {/* Post Type */}
         <FormRow label="Post Type" required>
@@ -210,62 +259,80 @@ export default function NewPostForm({ onCancel, onPostCreated }: NewPostFormProp
               </label>
             </div>
  
-            {postTo === 'Individual Students/Instructors' && (
-              <div className="mt-2 p-3 bg-light border rounded">
-                <div className="text-muted fw-bold mb-2" style={{ fontSize: 12 }}>SELECT RECIPIENTS:</div>
-                <div className="d-flex flex-wrap gap-2">
-                  {users.map(u => (
-                    <button
-                      key={u}
-                      onClick={() => toggleUser(u)}
-                      className={`btn btn-sm ${
-                        selectedUsers.includes(u)
-                          ? 'btn-primary'
-                          : 'btn-outline-secondary'
-                      }`}
-                      style={{ fontSize: 12 }}
-                    >
-                      {u}
-                    </button>
-                  ))}
-                </div>
-                {errors.users && <div className="text-danger mt-1" style={{ fontSize: 12 }}>{errors.users}</div>}
+            {postTo === 'Individual Students/Instructors' && (   
+              <div className="mt-2 p-3 bg-light border rounded">    
+                <div className="text-muted fw-bold mb-2 small">
+                  SELECT RECIPIENTS:
+                </div>    
+                
+                {loadingUsers ? (
+                  <div className="text-muted small">Loading users...</div>
+                ) : enrolledUsers.length === 0 ? (
+                  <div className="text-muted small">No users found in this course.</div>
+                ) : (
+                  <div className="d-flex flex-wrap gap-2">        
+                    {enrolledUsers
+                      .filter(enrollment => enrollment && enrollment._id)
+                      .map(enrollment => (          
+                        <button            
+                          key={enrollment._id}            
+                          onClick={() => toggleUser(enrollment._id)}            
+                          className={`btn btn-sm ${
+                            selectedUsers.includes(enrollment._id)
+                              ? 'btn-primary'
+                              : 'btn-outline-secondary'
+                          }`}
+                        >           
+                          <small>              
+                            {enrollment.firstName || 'Unknown'} {enrollment.lastName || 'User'}            
+                          </small>   
+                        </button>         
+                      ))}     
+                  </div>
+                )}
+                
+                {errors.users && <div className="text-danger mt-2 small">{errors.users}</div>}
               </div>
             )}
           </div>
         </FormRow>
- 
+
         {/* Folders */}
         <FormRow label="Select Folder(s)" required alignTop>
-           <div className="bg-light border rounded p-3">
-             <div className="d-flex flex-wrap gap-2">
+          <div className="bg-light border rounded p-3">
+            <div className="d-flex justify-content-between align-items-center mb-2">
+              <div className="text-muted fw-bold small">FOLDERS:</div>
+              {isFaculty && (
+              <button
+                onClick={handleManageFolders}
+                className="btn btn-sm btn-link text-primary d-flex align-items-center p-0 text-decoration-none small"
+              >
+                <FaCog className="me-1" size={12} />
+                Manage and reorder folders
+              </button>
+            )}
+            </div>
+            
+            <div className="d-flex flex-wrap gap-2">
               {allFolders.map(f => {
                 const isSelected = selectedFolders.includes(f);
                 return (
                   <button
                     key={f}
                     onClick={() => toggleFolder(f)}
-                    className={`btn btn-sm fw-semibold ${
+                    className={`btn btn-sm fw-semibold rounded-pill ${
                       isSelected
-                        ? 'btn-primary btn-outline-primary'
-                        : 'btn-light'
+                        ? 'btn-primary bg-primary bg-opacity-10 text-primary border-primary'
+                        : 'btn-light border-0'
                     }`}
-                    style={{
-                      borderRadius: 12,
-                      fontSize: 12,
-                      backgroundColor: isSelected ? '#dcebf7' : '#eee',
-                      color: isSelected ? '#2c5e88' : '#555',
-                      borderColor: isSelected ? '#9dc0db' : 'transparent',
-                      transition: 'background 0.2s'
-                    }}
                   >
-                    {f}
+                    <small>{f}</small>
                   </button>
                 )
               })}
-             </div>
-             {errors.folders && <div className="text-danger mt-2" style={{ fontSize: 12 }}>{errors.folders}</div>}
-           </div>
+            </div>
+            {errors.folders && <div className="text-danger mt-2 small">{errors.folders}</div>}
+          </div>
         </FormRow>
  
         {/* Summary */}

@@ -1,16 +1,19 @@
 type PiazzaNavBarProps = {
   courseName: string;
   currentUser: string;
+  userRole:string;
   activeTab: 'Q&A' | 'Manage Class';
   onTabChange: (tab: 'Q&A' | 'Manage Class') => void;
 };
  
-export default function PazzaNavBar({ courseName, currentUser, activeTab, onTabChange }: PiazzaNavBarProps) {
+export default function PazzaNavBar({ courseName, currentUser,userRole, activeTab, onTabChange }: PiazzaNavBarProps) {
+
+  const isFaculty = userRole.toLowerCase() === 'faculty';
   return (
     <nav className="navbar navbar-expand" style={{ backgroundColor: '#4a7c9e' }}>
       <div className="container-fluid px-4">
         {/* Application Logo */}
-        <a className="navbar-brand text-white fw-bold" href="#" style={{ fontSize: 24 }}>
+        <a className="navbar-brand text-white fw-bold" href="" style={{ fontSize: 24 }}>
           pazza
         </a>
  
@@ -30,15 +33,17 @@ export default function PazzaNavBar({ courseName, currentUser, activeTab, onTabC
               Q & A
             </button>
           </li>
-          <li className="nav-item">
-            <button
-              className={`nav-link text-white ${activeTab === 'Manage Class' ? 'fw-bold border-bottom border-white border-2' : ''}`}
-              onClick={() => onTabChange('Manage Class')}
-              style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-            >
-              Manage Class
-            </button>
-          </li>
+          {isFaculty && (
+            <li className="nav-item">
+              <button
+                className={`nav-link text-white ${activeTab === 'Manage Class' ? 'fw-bold border-bottom border-white border-2' : ''}`}
+                onClick={() => onTabChange('Manage Class')}
+                style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+              >
+                Manage Class
+              </button>
+            </li>
+          )}
         </ul>
  
         {/* Current User */}

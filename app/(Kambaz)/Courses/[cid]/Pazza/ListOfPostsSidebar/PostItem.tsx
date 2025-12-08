@@ -22,13 +22,15 @@ export type Post = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   instructorAnswers: string[];
   readByUserIds: string[];
+  isSelected : boolean
 };
 interface PostItemProps {
   post: Post;
   onClick: () => void;
+  isSelected:boolean
 }
 
-export default function PostItem({ post, onClick }: PostItemProps) {
+export default function PostItem({ post, onClick , isSelected}: PostItemProps) {
   const formatTime = (date: Date) => {
     const hours = date.getHours();
     const minutes = date.getMinutes();
@@ -57,34 +59,49 @@ export default function PostItem({ post, onClick }: PostItemProps) {
   };
 
   return (
-    <div
-      onClick={onClick}
-      className="p-3 border-bottom hover-bg-light"
-      style={{ cursor: "pointer" }}
-    >
-      <div className="d-flex justify-content-between align-items-start mb-1">
-        <h3 className="fw-semibold small text-dark flex-grow-1 m-0">
+  <div
+    onClick={onClick}
+    className={`p-3 border-bottom hover-bg-light ${
+      isSelected ? 'bg-primary bg-opacity-10' : ''
+    }`}
+    style={{ cursor: "pointer" }}
+  >
+    <div className="d-flex justify-content-between align-items-start mb-1">
+      <div className="d-flex align-items-center gap-2 flex-grow-1">
+        {(post.authorRole === "instructor" || post.authorRole === "faculty") && (
+          <span 
+            className="badge small fw-medium"
+            style={{
+              backgroundColor: "#f5c842",
+              color: "#000000",
+              padding: "2px 8px",
+              borderRadius: "4px",
+              fontSize: "0.75rem"
+            }}
+          >
+            Instructor
+          </span>
+        )}
+        <h3 className="fw-semibold small text-dark m-0">
           {post.title}
         </h3>
-        <span className="text-muted small ms-2">{getDayLabel(post.createdAt)}</span>
       </div>
-
-      <div className="d-flex align-items-start gap-2">
-        <span className="text-warning small fw-medium">
-          {post.author === "instructor" ? "Instr" : ""}
-        </span>
-        <p
-          className="small text-secondary m-0"
-          style={{
-            display: "-webkit-box",
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-          }}
-        >
-          {post.content}
-        </p>
-      </div>
+      <span className="text-muted small ms-2">{getDayLabel(post.createdAt)}</span>
     </div>
-  );
+
+    <div className="d-flex align-items-start gap-2">
+      <p
+        className="small text-secondary m-0"
+        style={{
+          display: "-webkit-box",
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: "vertical",
+          overflow: "hidden",
+        }}
+        dangerouslySetInnerHTML={{ __html: post.content }}
+      >
+      </p>
+    </div>
+  </div>
+);
 }

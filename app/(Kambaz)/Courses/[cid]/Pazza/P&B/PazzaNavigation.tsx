@@ -4,6 +4,7 @@ import FolderFilters from './FolderFilter';
 type PazzaNavigationProps = {
   courseName: string;
   currentUser: string;
+  userRole:string
   folders: string[];
   activeTab: 'Q&A' | 'Manage Class';
   selectedFolder: string;
@@ -14,6 +15,7 @@ type PazzaNavigationProps = {
 export default function PazzaNavigation({
   courseName,
   currentUser,
+  userRole,
   folders,
   activeTab,
   selectedFolder,
@@ -25,6 +27,7 @@ export default function PazzaNavigation({
       <PazzaNavBar
         courseName={courseName}
         currentUser={currentUser}
+        userRole = {userRole}
         activeTab={activeTab}
         onTabChange={onTabChange}
       />

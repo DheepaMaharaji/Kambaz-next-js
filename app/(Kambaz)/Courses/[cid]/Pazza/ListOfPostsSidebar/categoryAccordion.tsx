@@ -1,24 +1,23 @@
-import React from "react";
+// import React from "react";
 import { FiChevronRight, FiChevronDown } from "react-icons/fi";
 import PostItem, { Post } from "./PostItem";
-
-
-
-
+ 
 interface CategoryAccordionProps {
   title: string;
   posts: Post[];
   isOpen: boolean;
   onToggle: () => void;
   onPostClick: (postId: string) => void;
+  selectedPostId?: string;
 }
-
+ 
 export default function CategoryAccordion({
   title,
   posts,
   isOpen,
   onToggle,
   onPostClick,
+  selectedPostId, 
 }: CategoryAccordionProps) {
   return (
     <div className="border-bottom">
@@ -38,7 +37,7 @@ export default function CategoryAccordion({
           </span>
         </div>
       </button>
-
+ 
       {isOpen && (
         <div>
           {posts.map((post) => (
@@ -46,6 +45,7 @@ export default function CategoryAccordion({
               key={post._id}
               post={post}
               onClick={() => onPostClick(post._id)}
+              isSelected={selectedPostId === post._id} // Add this
             />
           ))}
         </div>
