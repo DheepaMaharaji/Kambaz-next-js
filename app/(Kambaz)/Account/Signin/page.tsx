@@ -46,7 +46,26 @@ export default function Signin() {
              className="mb-2" placeholder="password" type="password" id="wd-password" />
       <Button onClick={signin} id="wd-signin-btn" className="w-100" > Sign in </Button>
       <Link id="wd-signup-link" href="/Account/Signup"> Sign up </Link>
-
-    </div>
-  );
-}
+      
+      {/* Team Information */}      
+      <hr className="my-4" />      <div className="mt-4">        
+        <h5 className="mb-3">Team Members</h5>        <ul className="list-unstyled">          
+          <li className="mb-2">            <strong>Member 1:</strong> Dheepa Maharaji Sankara Subramanian - Section 4         
+           </li>          <li className="mb-2">           
+            <strong>Member 2:</strong> Kaylla Roland - Section 4         
+             </li>          <li className="mb-2">                 
+              </li>        </ul>        <h5 className="mb-3 mt-4">GitHub Repositories</h5>       
+               <ul className="list-unstyled">          <li className="mb-2">            
+                <strong>Frontend:</strong>{" "}            <a              
+                href="https://github.com/DheepaMaharaji/Kambaz-next-js.git"             
+                 target="_blank"              rel="noopener noreferrer"             
+                  className="text-primary"            >             
+                   https://github.com/DheepaMaharaji/Kambaz-next-js.git            </a>          
+                   </li>          <li className="mb-2">            <strong>Backend:</strong>{" "}           
+                    <a              href="https://github.com/DheepaMaharaji/kambaz-node-server-app.git"              
+                    target="_blank"              rel="noopener noreferrer"             
+                     className="text-primary"            >             
+                      https://github.com/DheepaMaharaji/kambaz-node-server-app.git            </a>          </li>       
+                       </ul>      </div>    </div>   
+                       
+                ); }
