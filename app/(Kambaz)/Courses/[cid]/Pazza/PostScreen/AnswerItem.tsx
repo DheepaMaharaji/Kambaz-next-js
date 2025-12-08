@@ -17,7 +17,7 @@ export default function AnswerItem({
 }: {
   answer: Answer;
   currentUserName: string;
-  currentUserRole: 'student' | 'instructor';
+  currentUserRole: string;
   onEdit: () => void;
   onDelete: () => void;
 }) {

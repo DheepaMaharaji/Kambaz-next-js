@@ -7,7 +7,7 @@
 //   type: "note" | "question";
 // }
 export type Post = {
-  id: string;
+  _id: string;
   title: string;
   author: string;
   authorRole: string;

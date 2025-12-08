@@ -43,9 +43,9 @@ export default function CategoryAccordion({
         <div>
           {posts.map((post) => (
             <PostItem
-              key={post.id}
+              key={post._id}
               post={post}
-              onClick={() => onPostClick(post.id)}
+              onClick={() => onPostClick(post._id)}
             />
           ))}
         </div>

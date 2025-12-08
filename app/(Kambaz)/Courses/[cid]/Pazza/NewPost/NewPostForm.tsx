@@ -98,7 +98,7 @@ export default function NewPostForm({ onCancel, onPostCreated }: NewPostFormProp
   const handlePost = () => {
     if (!validate()) return;
     const newPost: Post = {
-      id: Date.now().toString(),
+      _id: Date.now().toString(),
       title: summary,
       author: "Current User", // replace with dynamic user
       authorRole: "student", // replace with dynamic role
